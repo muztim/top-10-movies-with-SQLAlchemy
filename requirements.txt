@@ -1,0 +1,4 @@
+flask_sqlalchemy
+requests~=2.28.1
+Flask~=2.2.2
+WTForms~=3.0.1
