@@ -13,9 +13,11 @@
 {% block content %}
 <div class="container">
     <h1 class="heading">Select Movie</h1>
-  <p>
-    <a href="#"> MOVIE TITLE - MOVIE RELEASE DATE</a>
-  </p>
 
+  {% for movie in options %}
+  <p>
+    <a href="{{ url_for('home') }}">{{ movie.title }} - {{ movie.release_date }}</a>
+  </p>
+  {% endfor %}
 </div>
 {% endblock %}

@@ -15,17 +15,19 @@
   <h1 class="heading">Movie Title</h1>
     <p class="description">Edit Movie Rating</p>
 
-  <div class="form">
-    <div class="row">
-      <label>Your rating out of 10 e.g 7.5</label>
-      <input name="rating" placeholder="rating">
+    {{ wtf.quick_form(form) }}
 
-      <label>Your review</label>
-      <input name="review" placeholder="rating">
-      <button type="submit" class="btn btn-dark" href="{{ url_for('home') }}">Done</button>
+<!--  <div class="form">-->
+<!--    <div class="row">-->
+<!--      <label>Your rating out of 10 e.g 7.5</label>-->
+<!--      <input name="rating" placeholder="rating">-->
 
-    </div>
+<!--      <label>Your review</label>-->
+<!--      <input name="review" placeholder="rating">-->
+<!--      <button type="submit" class="btn btn-dark" href="{{ url_for('home') }}">Done</button>-->
 
-  </div>
+<!--    </div>-->
+
+<!--  </div>-->
   </div>
 {% endblock %}
