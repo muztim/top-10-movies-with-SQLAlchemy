@@ -8,6 +8,7 @@ import requests
 
 
 MOVIE_DB_URL = 'https://api.themoviedb.org/3/search/movie'
+MOVIE_DB_SEARCH_URL = "https://api.themoviedb.org/3/movie/"
 API_KEY = "41ef05c95affa23574000ce2d32297fc"
 
 #  ------------- Create app & database ------------- #
@@ -26,14 +27,16 @@ class NewMovie(db.Model):
     title = db.Column(db.String(100), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     rating = db.Column(db.Float, nullable=False)
+    ranking = db.Column(db.Integer, nullable=False)
     review = db.Column(db.String(100), nullable=False)
     overview = db.Column(db.String(300), nullable=False)
+    img_url = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return f"{self.title} - {self.year} - {self.year}"
-#
-#
-# db.create_all()
+
+
+db.create_all()
 
 # -------------- Create new movie -------------- #
 # new_movie = NewMovie(
@@ -67,11 +70,16 @@ class FindMovieForm(FlaskForm):
     submit = SubmitField("Add Movie")
 
 
+# ------------ All routes ------------- #
 @app.route("/")
 def home():
-    # all_movies = NewMovie.query.all()
+    # --- create list of movies sorted by rating --- #
+    all_movies = NewMovie.query.order_by(NewMovie.rating).all()
+
+    for i in all_movies:
+        all_movies[i].ranking = len(all_movies) - i
     # print(all_movies)
-    return render_template("index.html")
+    return render_template("index.html", movies=all_movies)
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -100,7 +108,27 @@ def add_movie():
         print(response)
         data = response["results"]
         return render_template('select.html', options=data)
+
     return render_template('add.html', form=add_form)
+
+
+@app.route('/find')
+def find():
+    movie_api_id = request.args.get('id')
+    if movie_api_id:
+        search_params = {'movie_id': movie_api_id, 'api_key': API_KEY}
+        response = requests.get(url=MOVIE_DB_SEARCH_URL, params=search_params).json()
+        data = NewMovie(
+            title=response['original_title'],
+            year=response['release_date'].strftime("%Y"),
+            rating=round(response['average_vote'], 1),
+            overview=response['overview'],
+            img_url=f"{MOVIE_DB_SEARCH_URL}/{movie_api_id}{response['poster_path']}"
+        )
+        db.session.add(data)
+        db.session.commit()
+        return redirect(url_for('home'))
+    pass
 
 
 @app.route('/delete')
