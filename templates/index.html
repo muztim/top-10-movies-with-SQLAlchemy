@@ -18,7 +18,8 @@
 
   {% for movie in movies %}
   <div class="card" >
-    <div class="front" style="background-image: url('https://www.shortlist.com/media/images/2019/05/the-30-coolest-alternative-movie-posters-ever-2-1556670563-K61a-column-width-inline.jpg');">
+    <div class="front" style="background-image: url('{{ movie.img_url }}');">
+        <!-- 'https://www.shortlist.com/media/images/2019/05/the-30-coolest-alternative-movie-posters-ever-2-1556670563-K61a-column-width-inline.jpg' -->
         <p class="large">{{ movie.ranking }}</p>
     </div>
     <div class="back">
@@ -39,9 +40,10 @@
       </div>
     </div>
   </div>
+ {% endfor %}
 </div>
 <div class="container text-center add">
-<a href="{{ url_for('add_movie') }}" class="button">Add Movie</a>
+    <a href="{{ url_for('add_movie') }}" class="button">Add Movie</a>
 </div>
 
 {% endblock %}

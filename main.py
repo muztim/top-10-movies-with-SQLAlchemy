@@ -43,12 +43,17 @@ db.create_all()
 
 # -------------- Create new movie -------------- #
 # new_movie = NewMovie(
-#     title=" The Hate U Give",
+#     title=" Avengers: Endgame",
 #     year="2018",
-#     rating=9,
-#     review="The message is wonderful!",
-#     overview="A teenage girl who grapples with racism, police brutality, and activism after witnessing her "
-#              "Black friend murdered by the police."
+#     rating=8.2,
+#     ranking=3,
+#     review="GOAT",
+#     overview="After the devastating events of Avengers: Infinity War, the universe is in ruins due to the efforts of "
+#              "the Mad Titan, Thanos. With the help of remaining allies, the Avengers must assemble once more in order "
+#              "to undo Thanos' actions and restore order to the universe once and for all, no matter what consequences "
+#              "may be in store.",
+#     img_url="/or06FN3Dka5tukK1e9sl16pB3iy.jpg"
+#
 # )
 
 
@@ -106,16 +111,16 @@ def find():
     if movie_api_id:
         search_params = {'movie_id': movie_api_id, 'api_key': config.API_KEY}
         response = requests.get(url=MOVIE_DB_SEARCH_URL, params=search_params).json()
-        new_movie = NewMovie(
+        data = NewMovie(
             title=response['original_title'],
             year=response['release_date'].strftime("%Y"),
             rating=round(response['average_vote'], 1),
             overview=response['overview'],
             img_url=f"{MOVIE_DB_IMAGE_URL}/{movie_api_id}{response['poster_path']}"
         )
-        db.session.add(new_movie)
+        db.session.add(data)
         db.session.commit()
-        return redirect(url_for('rate_movie', id=new_movie.id))
+        return redirect(url_for('rate_movie', id=data.id))
 
 
 @app.route('/edit', methods=['GET', 'POST'])
