@@ -11,11 +11,11 @@ import config
 MOVIE_DB_URL = 'https://api.themoviedb.org/3/search/movie'
 MOVIE_DB_SEARCH_URL = "https://api.themoviedb.org/3/movie/"
 MOVIE_DB_IMAGE_URL = "https://image.tmdb.org/t/p/w500"
-API_KEY = config.API_KEY        # "41ef05c95affa23574000ce2d32297fc"
+API_KEY = config.API_KEY
 
 #  ------------- Create app & database ------------- #
 app = Flask(__name__)
-app.config['SECRET_KEY'] = config.SECRET_KEY    # '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = config.SECRET_KEY
 Bootstrap(app)
 
 app.app_context().push()
